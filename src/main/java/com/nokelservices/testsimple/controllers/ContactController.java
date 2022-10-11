@@ -42,6 +42,8 @@ public class ContactController {
     public ResponseEntity<List<Contact>> getAllContacts(){
         List<Contact> contacts = contactRepository.findAll();
 
+        String resp = String.format("Returning %d contacts", contacts.size());
+        log.info(resp);
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
@@ -50,9 +52,11 @@ public class ContactController {
         Optional<Contact> contact = contactRepository.findById(id);
 
         if (contact.isPresent()) {
+            log.info(String.format("Found 1 record for id=%d", id));
             return new ResponseEntity<>(contact.get(), HttpStatus.OK);
         }
         else {
+            log.info(String.format("No records found for id=%d", id));
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
